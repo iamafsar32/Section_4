@@ -1,0 +1,56 @@
+<div class="dashboard">
+  <h1 class="page-title">📊 Dashboard</h1>
+
+  <div class="summary-grid">
+    <div class="summary-card summary-card--income">
+      <div class="summary-card__icon">💰</div>
+      <div>
+        <p class="summary-card__label">Total Income</p>
+        <p class="summary-card__value">₹{{ summary.income | number }}</p>
+      </div>
+    </div>
+    <div class="summary-card summary-card--expense">
+      <div class="summary-card__icon">💸</div>
+      <div>
+        <p class="summary-card__label">Total Expenses</p>
+        <p class="summary-card__value">₹{{ summary.expenses | number }}</p>
+      </div>
+    </div>
+    <div class="summary-card summary-card--balance">
+      <div class="summary-card__icon">🏦</div>
+      <div>
+        <p class="summary-card__label">Balance</p>
+        <p class="summary-card__value">₹{{ summary.balance | number }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 class="card__title">Expenses by Category</h2>
+    <div *ngFor="let item of expensesByCategory" class="chart__bar">
+      <div class="chart__label">{{ item.name }}</div>
+      <div class="chart__track">
+        <div class="chart__fill" [style.width.%]="item.percent"></div>
+      </div>
+      <div class="chart__value">₹{{ item.amount | number }} ({{ item.percent }}%)</div>
+    </div>
+    <p *ngIf="expensesByCategory.length === 0" class="empty">No expenses yet</p>
+  </div>
+
+  <div class="card">
+    <div class="card__header">
+      <h2 class="card__title">Recent Transactions</h2>
+      <a routerLink="/transactions" class="card__link">View all →</a>
+    </div>
+    <div *ngFor="let t of recentTransactions" class="txn-item">
+      <div>
+        <p class="txn-item__title">{{ t.title }}</p>
+        <p class="txn-item__meta">{{ t.category }} · {{ t.date }}</p>
+      </div>
+      <p [class]="'txn-item__amount txn-item__amount--' + t.type">
+        {{ t.type === 'income' ? '+' : '-' }}₹{{ t.amount | number }}
+      </p>
+    </div>
+    <p *ngIf="recentTransactions.length === 0" class="empty">No transactions yet</p>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+<div class="categories">
+  <div class="page-header">
+    <h1 class="page-title">🏷️ Categories</h1>
+    <button class="btn btn--primary" (click)="showForm = !showForm">
+      {{ showForm ? 'Cancel' : '+ Add Category' }}
+    </button>
+  </div>
+
+  <div *ngIf="showForm" class="form-card">
+    <h2 class="form-card__title">Add New Category</h2>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form__row">
+        <div class="form__group">
+          <label class="form__label">Name *</label>
+          <input type="text" formControlName="name" class="form__input" [class.error]="name?.invalid && name?.touched" placeholder="Category name" />
+          <span *ngIf="name?.invalid && name?.touched" class="form__error">
+            <span *ngIf="name?.errors?.['required']">Name is required</span>
+            <span *ngIf="name?.errors?.['minlength']">Min 2 characters</span>
+          </span>
+        </div>
+        <div class="form__group">
+          <label class="form__label">Icon</label>
+          <input type="text" formControlName="icon" class="form__input" placeholder="🏷️" />
+        </div>
+        <div class="form__group">
+          <label class="form__label">Color</label>
+          <input type="color" formControlName="color" class="form__input form__input--color" />
+        </div>
+      </div>
+      <div class="form__actions">
+        <button type="submit" class="btn btn--primary">Add Category</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="grid">
+    <div *ngFor="let cat of categories" class="cat-card" [style.borderLeftColor]="cat.color">
+      <div class="cat-card__icon" [style.background]="cat.color + '20'">{{ cat.icon }}</div>
+      <div class="cat-card__info">
+        <p class="cat-card__name">{{ cat.name }}</p>
+        <div class="cat-card__color" [style.background]="cat.color"></div>
+      </div>
+      <button class="btn btn--icon" (click)="deleteCategory(cat.id)">🗑️</button>
+    </div>
+  </div>
+</div>

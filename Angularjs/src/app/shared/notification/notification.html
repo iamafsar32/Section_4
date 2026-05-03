@@ -1,0 +1,8 @@
+<div class="notifications">
+  <div
+    *ngFor="let n of notificationService.notifications$ | async"
+    [ngClass]="['notification', 'notification--' + n.type]">
+    <span>{{ n.message }}</span>
+    <button (click)="notificationService.remove(n.id)">✕</button>
+  </div>
+</div>

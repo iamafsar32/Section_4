@@ -1,0 +1,83 @@
+<div class="transactions">
+  <div class="page-header">
+    <h1 class="page-title">💳 Transactions</h1>
+    <button class="btn btn--primary" (click)="openAddForm()">+ Add Transaction</button>
+  </div>
+
+  <div *ngIf="showForm" class="overlay" (click)="closeForm()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal__header">
+        <h2>{{ editingId ? 'Edit' : 'Add' }} Transaction</h2>
+        <button class="modal__close" (click)="closeForm()">✕</button>
+      </div>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form__group">
+          <label class="form__label">Title *</label>
+          <input type="text" formControlName="title" class="form__input" [class.error]="title?.invalid && title?.touched" placeholder="Title" />
+          <span *ngIf="title?.invalid && title?.touched" class="form__error">
+            <span *ngIf="title?.errors?.['required']">Title is required</span>
+            <span *ngIf="title?.errors?.['minlength']">Min 2 characters</span>
+          </span>
+        </div>
+        <div class="form__group">
+          <label class="form__label">Amount *</label>
+          <input type="number" formControlName="amount" class="form__input" [class.error]="amount?.invalid && amount?.touched" placeholder="0.00" min="0" />
+          <span *ngIf="amount?.invalid && amount?.touched" class="form__error">
+            <span *ngIf="amount?.errors?.['required']">Amount is required</span>
+            <span *ngIf="amount?.errors?.['min']">Must be greater than 0</span>
+          </span>
+        </div>
+        <div class="form__row">
+          <div class="form__group">
+            <label class="form__label">Type *</label>
+            <select formControlName="type" class="form__input">
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+          </div>
+          <div class="form__group">
+            <label class="form__label">Category *</label>
+            <select formControlName="category" class="form__input" [class.error]="category?.invalid && category?.touched">
+              <option value="">Select...</option>
+              <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+            </select>
+            <span *ngIf="category?.invalid && category?.touched" class="form__error">Required</span>
+          </div>
+        </div>
+        <div class="form__group">
+          <label class="form__label">Date *</label>
+          <input type="date" formControlName="date" class="form__input" [class.error]="date?.invalid && date?.touched" />
+          <span *ngIf="date?.invalid && date?.touched" class="form__error">Date is required</span>
+        </div>
+        <div class="form__group">
+          <label class="form__label">Description</label>
+          <input type="text" formControlName="description" class="form__input" placeholder="Optional" />
+        </div>
+        <div class="form__actions">
+          <button type="button" class="btn btn--secondary" (click)="closeForm()">Cancel</button>
+          <button type="submit" class="btn btn--primary">{{ editingId ? 'Update' : 'Add' }}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="list">
+    <div *ngFor="let t of transactions" class="txn-card">
+      <div class="txn-card__left">
+        <div [class]="'dot dot--' + t.type"></div>
+        <div>
+          <p class="txn-card__title">{{ t.title }}</p>
+          <p class="txn-card__meta">{{ t.category }} · {{ t.date }}</p>
+        </div>
+      </div>
+      <div class="txn-card__right">
+        <p [class]="'txn-card__amount txn-card__amount--' + t.type">
+          {{ t.type === 'income' ? '+' : '-' }}₹{{ t.amount | number }}
+        </p>
+        <button class="btn btn--icon" (click)="openEditForm(t)">✏️</button>
+        <button class="btn btn--icon" (click)="deleteTransaction(t.id)">🗑️</button>
+      </div>
+    </div>
+    <p *ngIf="transactions.length === 0" class="empty">No transactions yet</p>
+  </div>
+</div>

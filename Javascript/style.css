@@ -1,0 +1,33 @@
+body {
+  font-family: Arial;
+  background: #f2f2f2;
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.container {
+  background: white;
+  padding: 30px;
+  width: 350px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px gray;
+}
+
+input {
+  padding: 10px;
+  width: 65%;
+}
+
+button {
+  padding: 10px;
+  cursor: pointer;
+}
+
+#weatherCard {
+  margin-top: 20px;
+}
+
+img {
+  width: 80px;
+}
